@@ -7,7 +7,7 @@ from tensorflow.keras import layers
 import os
 
 # Load annotations from CSV
-annotations_df = pd.read_csv(r'C:\Users\tejas\OneDrive\Documents\project\train.csv')
+annotations_df = pd.read_csv(r'C:\Users\......\train.csv')
 
 # Function to load and preprocess images
 def load_and_preprocess_images(annotations_df):
