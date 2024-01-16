@@ -6,13 +6,19 @@ from tensorflow import keras
 from tensorflow.keras import layers
 import os
 
+# Load annotations from CSV
+annotations_df = pd.read_csv(r'C:\Users\tejas\OneDrive\Documents\project\train.csv')
+
 # Function to load and preprocess images
-def load_and_preprocess_images(annotations_df, data_folder):
+def load_and_preprocess_images(annotations_df):
     images = []
     labels = []
 
     for index, row in annotations_df.iterrows():
-        image_path = os.path.join(data_folder, row['filename'])
+        image_path = os.path.join(
+            r'C:\Users\tejas\OneDrive\Documents\project\train\cat',
+            row['filename']
+        )
         image = cv2.imread(image_path)
 
         if image is None:
@@ -30,11 +36,9 @@ def load_and_preprocess_images(annotations_df, data_folder):
 
     return np.array(images), np.array(labels)
 
-# Load annotations from CSV
-train_annotations_df = pd.read_csv(r'C:\Users\tejas\OneDrive\Documents\project\train.csv')
 
-# Load and preprocess the training dataset
-images, labels = load_and_preprocess_images(train_annotations_df, r'C:\Users\tejas\OneDrive\Documents\project\train\cat')
+# Load and preprocess the dataset
+images, labels = load_and_preprocess_images(annotations_df)
 
 # Split the dataset into training and validation sets
 X_train, X_val, y_train, y_val = train_test_split(images, labels, test_size=0.2, random_state=42)
@@ -50,20 +54,8 @@ model = keras.Sequential([
     layers.Dense(4, activation='sigmoid')  # Output layer with 4 neurons for xmin, ymin, xmax, ymax
 ])
 
-# Compile the model with MSE as the loss
+# Compile the model
 model.compile(optimizer='adam', loss='mean_squared_error')
 
 # Train the model
 model.fit(X_train, y_train, epochs=10, validation_data=(X_val, y_val))
-
-# Load and preprocess the test dataset
-test_annotations_df = pd.read_csv(r'C:\Users\tejas\OneDrive\Documents\project\train.csv')
-X_test, y_test = load_and_preprocess_images(test_annotations_df, r'C:\Users\tejas\OneDrive\Documents\project\train\cat')
-
-# Evaluate the model on the validation set
-score_val = model.evaluate(X_val, y_val)
-print('\nValidation loss:', score_val)
-
-# Evaluate the model on the test set
-score_test = model.evaluate(X_test, y_test)
-print('\nTest loss:', score_test)
