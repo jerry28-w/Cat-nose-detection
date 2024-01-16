@@ -3,10 +3,10 @@ import pandas as pd
 import os
 
 # Path to the folder containing cat images
-image_folder_path = r'C:\Users\tejas\OneDrive\Documents\project\archive\dataset-part1\dataset-part1'
+image_folder_path = r'C:image_path_to_train_and_val_datatsets'
 
 # Output CSV file to store annotations
-output_csv_path = r'C:\Users\tejas\OneDrive\Documents\project\annotations_manual.csv'
+output_csv_path = r'C:.....\annotations_manual.csv'
 
 # Create an empty DataFrame to store annotations
 annotations_df = pd.DataFrame(columns=['filename', 'xmin', 'ymin', 'xmax', 'ymax'])
